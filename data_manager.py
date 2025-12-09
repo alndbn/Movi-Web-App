@@ -6,6 +6,7 @@ class DataManager():
         db.session.add(new_user)
         db.session.commit()
 
+
     def get_users(self):
         users = db.session.execute(db.select(User)).scalars()
         return users
