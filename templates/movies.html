@@ -1,10 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+    <h1>List of Users to view Movies</h1>
+    <ul class="user-list">
+        {% for user in user %}
+        <li class="user-entry">
+            <a class="btn" href="{{ url_for('get_list_of_fav_movies', user_id=user.id) }}">
+                {{ user.name }} (Click to view movies)
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
 
-</body>
-</html>
+    {% if current_user_id %}
+    <h2>Add a New Movie</h2>
+    <form action="{{ url_for('add_new_fav_movie', user_id=current_user_id) }}" method="POST">
+        <input type="text" name="title" placeholder="Movie Title" required>
+        <input type="number" name="year" placeholder="Release Year">
+
+        <button type="submit"> Add to favourites</button>
+    </form>
+    {% endif %}
+
+    <h2>Movies for Current User</h2>
+    {% if movies %}
+        <ul>
+        {% for movie in movies %}
+            <li>
+                {{ movie.title }} ({{ movie.year }})
+
+                <form action="{{ url_for('change_movie_title', user_id=current_user_id, movie_id=movie.id) }}" method="POST" style="display:inline;">
+                    <input type="text" name="new_title" placeholder="New Title" required>
+                    <button type="submit"> Change Title</button>
+                </form>
+
+                <form action="{{ url_for('delete_fav_movie', user_id=current_user_id, movie_id=movie.id) }}" method="POST" style="display:inline; margin-left: 10px;">
+                    <button type="submit"> Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No favorite movies found for this user.</p>
+    {% endif %}
+
+{% endblock %}
