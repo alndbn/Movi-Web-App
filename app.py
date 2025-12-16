@@ -1,7 +1,11 @@
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for
 from data_manager import DataManager
 from models import db, Movie, User
 import os
+
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -18,12 +22,6 @@ def index():
     return render_template('index.html', users=users)
 
 
-@app.route('/users')
-def list_users():
-    users = data_manager.get_users()
-    return render_template('users.html', users=users)
-
-
 @app.route('/users', methods=['POST'])
 def create_user():
     if request.method == 'POST':
@@ -31,7 +29,7 @@ def create_user():
         success = data_manager.create_user(name)
 
         if success:
-            return redirect(url_for('list_users'))
+            return redirect(url_for('index'))
         else:
             return f"Error creating user '{name}'. Please try again.", 500
 
@@ -41,7 +39,6 @@ def get_list_of_fav_movies(user_id):
     all_users = data_manager.get_users()
     user_movies = data_manager.get_movies_by_user(user_id)
     return render_template('movies.html', users=all_users, current_user_id=user_id, movies=user_movies)
-
 
 
 @app.route('/users/<int:user_id>/movies', methods=['POST'])

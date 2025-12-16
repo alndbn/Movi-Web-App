@@ -1,5 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Users</h1>
-    <p>Use the navigation above to create a new user or view existing users</p>
+    <h1 class="cv-font-display">Users</h1>
+
+    <div class="user-list-grid">
+        {% for user in users %}
+        <div class="user-card cv-movie-card cv-shine-effect cv-animate-fade-up">
+            <h2 class="cv-font-display">{{ user.name }}</h2>
+            <a class="btn cv-button cv-primary" href="{{ url_for('get_list_of_fav_movies', user_id=user.id) }}">View Movies</a>
+        </div>
+        {% endfor %}
+    </div>
+    <hr style="margin-top: var(--cv-space-8);">
+
+    <h1 class="cv-font-display">Add New User</h1>
+    <form action="{{ url_for('create_user') }}" method="POST">
+        <input type="text" name="name" placeholder="User name" required class="cv-input">
+        <button type="submit" class="cv-button cv-primary">Add User</button>
+    </form>
 {% endblock %}

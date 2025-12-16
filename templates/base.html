@@ -7,15 +7,9 @@
 </head>
 <body>
     <header class="navigation-bar">
-        <form action="{{ url_for('create_user') }}" method="Post" style="display: inline-block">
-            <input type="text" name="name" placeholder="Please enter your name: " required>
-            <button type="submit"> Create User</button>
-        </form>
-        <form action="{{ url_for('list_users') }}" method="GET" style="display: inline-block;">
-            <button type="submit">Show all Users</button>
-        </form>
-
-    <hr> </header>
+        <a href="{{ url_for('index') }}">MovieApp</a>
+        <hr>
+    </header>
     <main class="container">
         {% block content %}{% endblock %}
     </main>

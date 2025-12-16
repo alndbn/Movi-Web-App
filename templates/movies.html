@@ -1,46 +1,47 @@
 {% extends "base.html" %}
+
 {% block content %}
-    <h1>List of Users to view Movies</h1>
-    <ul class="user-list">
-        {% for user in user %}
-        <li class="user-entry">
-            <a class="btn" href="{{ url_for('get_list_of_fav_movies', user_id=user.id) }}">
-                {{ user.name }} (Click to view movies)
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
+  <h1 class="cv-font-display">Movies for Current User</h1>
 
-    {% if current_user_id %}
-    <h2>Add a New Movie</h2>
-    <form action="{{ url_for('add_new_fav_movie', user_id=current_user_id) }}" method="POST">
-        <input type="text" name="title" placeholder="Movie Title" required>
-        <input type="number" name="year" placeholder="Release Year">
+  <h2 class="cv-font-display">Add a New Movie</h2>
+  <form action="{{ url_for('add_new_fav_movie', user_id=current_user_id) }}" method="POST" class="form-row">
+      <input type="text" name="title" placeholder="Movie Title" required class="cv-input">
+      <input type="number" name="year" placeholder="Release Year" class="cv-input">
+      <button type="submit" class="cv-button cv-primary">➕ Add to favourites</button>
+  </form>
 
-        <button type="submit"> Add to favourites</button>
-    </form>
-    {% endif %}
+  <hr style="margin-top: var(--cv-space-6); margin-bottom: var(--cv-space-6);">
 
-    <h2>Movies for Current User</h2>
-    {% if movies %}
-        <ul>
-        {% for movie in movies %}
-            <li>
-                {{ movie.title }} ({{ movie.year }})
+  <h2 class="cv-font-display">Movies</h2>
 
-                <form action="{{ url_for('change_movie_title', user_id=current_user_id, movie_id=movie.id) }}" method="POST" style="display:inline;">
-                    <input type="text" name="new_title" placeholder="New Title" required>
-                    <button type="submit"> Change Title</button>
-                </form>
+  {% if movies and movies|length > 0 %}
+    <div class="movie-grid">
+      {% for movie in movies %}
+        <div class="movie-card">
+          <img class="movie-poster"
+               src="{{ movie.poster_url if movie.poster_url and movie.poster_url != 'N/A' else 'https://via.placeholder.com/300x450?text=No+Poster' }}"
+               alt="{{ movie.title }} poster">
 
-                <form action="{{ url_for('delete_fav_movie', user_id=current_user_id, movie_id=movie.id) }}" method="POST" style="display:inline; margin-left: 10px;">
-                    <button type="submit"> Delete</button>
-                </form>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No favorite movies found for this user.</p>
-    {% endif %}
+          <div class="movie-body">
+            <h3 class="movie-title">{{ movie.title }}</h3>
+            <p class="movie-meta"><strong>Year:</strong> {{ movie.year }}</p>
+            <p class="movie-meta"><strong>Director:</strong> {{ movie.director }}</p>
 
+            <div class="movie-actions">
+              <form action="{{ url_for('change_movie_title', user_id=current_user_id, movie_id=movie.id) }}" method="POST">
+                <input type="text" name="new_title" placeholder="New title" required class="cv-input cv-text-sm">
+                <button type="submit" class="cv-button cv-secondary">✏️ Update</button>
+              </form>
+
+              <form action="{{ url_for('delete_fav_movie', user_id=current_user_id, movie_id=movie.id) }}" method="POST">
+                <button type="submit" class="cv-button cv-destructive">🗑️ Delete</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No movies yet. Add your first one 🙂</p>
+  {% endif %}
 {% endblock %}
