@@ -162,7 +162,7 @@ form{
   margin-bottom: 12px;
 }
 
-/* optional: wenn du cv-movie-card drin hast */
+
 .cv-movie-card{
   position: relative;
   overflow: hidden;
@@ -195,19 +195,27 @@ form{
 /* ========= Movies (Cards) ========= */
 .movie-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 22px;
   margin-top: 18px;
+  align-items: start;
 }
 
+
+
 .movie-card{
+  display: flex;
+  flex-direction: column;
   border-radius: var(--cv-radius);
   overflow: hidden;
+  padding: 0;
+  width: 100%;
   border: 1px solid var(--cv-border);
   background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.06));
   box-shadow: var(--cv-shadow);
   transition: transform .18s ease, border-color .18s ease, background .18s ease;
 }
+
 
 .movie-card:hover{
   transform: translateY(-6px);
@@ -215,13 +223,16 @@ form{
   background: linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.07));
 }
 
+
 .movie-poster{
   width: 100%;
   height: 320px;
   object-fit: cover;
   display: block;
   background: rgba(255,255,255,0.06);
+  border-radius: 18px 18px 0 0;
 }
+
 
 .movie-body{
   padding: 14px 14px 16px;
@@ -255,3 +266,5 @@ form{
   .movie-poster{ height: 280px; }
   .cv-input{ width: 100%; }
 }
+
+
